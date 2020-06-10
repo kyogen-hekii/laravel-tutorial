@@ -9,7 +9,7 @@ create-project:
 	@make up
 	docker-compose exec app composer create-project --prefer-dist laravel/laravel .
 	docker-compose exec app chown -Rh ${USER}:${USER} .
-	docker-compose exec app chmod -R storage bootstrap/cache
+	docker-compose exec app chmod -R 775 storage bootstrap/cache
 
 install-recommend-packages:
 	docker-compose exec app composer require doctrine/dbal
@@ -51,6 +51,8 @@ web:
 	docker-compose exec web ash
 app:
 	docker-compose exec app bash
+appme:
+	docker-compose exec --user $(shell id -u) app bash
 migrate:
 	docker-compose exec app php artisan migrate
 fresh:
