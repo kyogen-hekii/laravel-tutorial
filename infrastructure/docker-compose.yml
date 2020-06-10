@@ -5,11 +5,18 @@ volumes:
 services:
   app:
     build: ./docker/php
+    tty: true
     volumes:
       - php-fpm-socket:/var/run/php-fpm
       - ../backend:/work/backend
       - ./docker/php/bash/.bash_history:/root/.bash_history
       - ./docker/php/bash/psysh:/root/.config/psysh
+      # ファイル作成時,appのuser=rootで作成されてしまう
+      # このとき1. gidが変わらない, 2. /etc/passwdの情報とuidが一致しない問題がある
+      # このせいで-uオプションに加えてマウントが必要になる(:roはreadonly)
+      # https://qiita.com/yohm/items/047b2e68d008ebb0f001
+      - /etc/group:/etc/group:ro
+      - /etc/passwd:/etc/passwd:ro
 
   web:
     build: ./docker/nginx
@@ -25,3 +32,13 @@ services:
       - db-store:/var/lib/mysql
     ports:
       - 3306:3306
+
+#NG:app
+# 少なくともubuntuでは使えないため、.env経由で行う必要がある。
+# しかし、userを設定してもrootじゃないとphpはまともに環境作れない
+# 結局、create-project後に、chown & chmodして調整することに
+# environment:
+#   - UID
+#   - GID
+# user: $UID:$GID
+# user: "${UID}:${GID}"

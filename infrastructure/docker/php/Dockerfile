@@ -1,5 +1,11 @@
 FROM php:7.4-fpm-buster
+# default shellの上書き
+# c: 新しいbashプロセス上で実行する(shebang次第で別のshellで実行される)
 SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
+
+# rootじゃないとcomposerは使えないけど、rootでフォルダ作られると困る
+# https://stackoverflow.com/questions/52866720/how-to-run-composer-as-non-root-user-on-official-docker-php-image
+# RUN chmod u+s /usr/local/sbin/php-fpm
 
 # timezone environment
 ENV TZ=UTC \
