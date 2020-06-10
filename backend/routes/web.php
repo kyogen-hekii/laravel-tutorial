@@ -16,3 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+# /folders/{フォルダID}/tasks
+# TaskController コントローラーの index メソッドを呼びだす
+# routeに名前をつける
+# アプリケーションの中で URL を参照する際にはこの名前を使う
+Route::get('/folders/{id}/tasks', 'TaskController@index')->name('tasks.index');
