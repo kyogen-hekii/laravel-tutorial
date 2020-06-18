@@ -11,7 +11,7 @@ services:
       - ../backend:/work/backend
       - ./docker/php/bash/.bash_history:/root/.bash_history
       - ./docker/php/bash/psysh:/root/.config/psysh
-      # ファイル作成時,appのuser=rootで作成されてしまう
+      # ファイル作成時,hostでは不明のappのuserではrootとして作成されてしまう
       # このとき1. gidが変わらない, 2. /etc/passwdの情報とuidが一致しない問題がある
       # このせいで-uオプションに加えてマウントが必要になる(:roはreadonly)
       # https://qiita.com/yohm/items/047b2e68d008ebb0f001

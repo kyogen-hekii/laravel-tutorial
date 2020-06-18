@@ -8,7 +8,7 @@ create-project:
 	@make build
 	@make up
 	docker-compose exec app composer create-project --prefer-dist laravel/laravel .
-	docker-compose exec app chown -Rh ${USER}:${USER} .
+	docker-compose exec app chown -Rh $(shell id -u):$(shell id -g) .
 	docker-compose exec app chmod -R 775 storage bootstrap/cache
 
 install-recommend-packages:
@@ -18,6 +18,9 @@ install-recommend-packages:
 	docker-compose exec app composer require --dev barryvdh/laravel-debugbar
 	docker-compose exec app php artisan vendor:publish --provider="BeyondCode\DumpServer\DumpServerServiceProvider"
 	docker-compose exec app php artisan vendor:publish --provider="Barryvdh\Debugbar\ServiceProvider"
+	# 追加
+	# docker-compose exec app composer require --dev friendsofphp/php-cs-fixer
+	
 init:
 	mkdir -p ./docker/php/bash/psysh
 	touch ./docker/php/bash/.bash_history
@@ -52,7 +55,7 @@ web:
 app:
 	docker-compose exec app bash
 appme:
-	docker-compose exec --user $(shell id -u) app bash
+	docker-compose exec --user $(shell id -u):$(shell id -g) app bash
 migrate:
 	docker-compose exec app php artisan migrate
 fresh:
