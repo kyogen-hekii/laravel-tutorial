@@ -1,6 +1,20 @@
 # 入門Laravelチュートリアル
 [参考](https://www.hypertextcandy.com/laravel-tutorial-todo-app-list-folders/)
 
+# 準備
+```sh
+git clone git@github.com:ucan-lab/docker-laravel.git XXX
+cd XXX/infrastructure
+make create-project
+make install-recommend-packages
+```
+
+毎日、スタート時は
+```sh
+cd XXX/infrastructure
+make up
+```
+
 ## 手順
 1. ルーティング
 routes/web.php
@@ -88,10 +102,13 @@ public/css/styles.css
 ## QA
 1. `php artisan` で作成すると権限の問題が生じる
 Makefileでこうやって対処した
-```
+```Makefile
 appme:
   docker-compose exec --user $(shell id -u) app bash
 ```
+
+2. View [folders.create] not found.
+
 
 ## Tips
 1. a5m2で接続できない
@@ -105,6 +122,8 @@ wsl2のubuntuのipを調べる(eth0)
 * ->
   メソッドチェーン.の意味
     `$folder->id` こうやってつなげて書いてる笑
+* ::
+  静的プロパティ(メソッド)にアクセス
 
 3. ログは?
 `code storage/logs/laravel.log`

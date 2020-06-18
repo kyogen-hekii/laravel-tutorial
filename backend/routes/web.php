@@ -21,3 +21,6 @@ Route::get('/', function () {
 # routeに名前をつける
 # アプリケーションの中で URL を参照する際にはこの名前を使う
 Route::get('/folders/{id}/tasks', 'TaskController@index')->name('tasks.index');
+
+Route::get('/folders/create', 'FolderController@showCreateForm')->name('folders.create');
+Route::post('/folders/create', 'FolderController@create');
